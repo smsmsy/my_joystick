@@ -5,15 +5,9 @@ import 'package:my_joystick/extension.dart';
 
 class MyJoystick extends StatefulWidget {
   const MyJoystick(
-      {super.key,
-      this.size = Size.infinite,
-      this.baseWidget,
-      this.circleWidget,
-      required this.onMove});
+      {super.key, this.size = Size.infinite, required this.onMove});
 
   final Size size;
-  final Widget? baseWidget;
-  final Widget? circleWidget;
   final Function(Offset) onMove;
 
   @override
@@ -43,14 +37,14 @@ class _MyJoystickState extends State<MyJoystick> {
         children: [
           SizedBox.fromSize(
             size: baseSize,
-            child: widget.baseWidget ?? const BasePaint(),
+            child: const BasePaint(),
           ),
           Positioned(
             top: circleOffset.dy,
             left: circleOffset.dx,
             child: SizedBox.fromSize(
               size: circleSize,
-              child: widget.circleWidget ?? const CirclePaint(),
+              child: const CirclePaint(),
             ),
           )
         ],
@@ -78,4 +72,3 @@ class _MyJoystickState extends State<MyJoystick> {
     });
   }
 }
-
