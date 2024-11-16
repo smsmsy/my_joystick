@@ -38,24 +38,8 @@ class _MyJoystickState extends State<MyJoystick> {
     return SizedBox.fromSize(
       size: baseSize,
       child: GestureDetector(
-        onPanUpdate: (details) {
-          final moveOffset = details.localPosition -
-              Offset(baseSize.width, baseSize.width) / 2;
-          final maxRadius = (baseSize.width - circleSize.width) / 2;
-          final limitedOffset = Offset.fromDirection(
-            moveOffset.direction,
-            moveOffset.distance.clamp(0, maxRadius),
-          );
-          setState(() {
-            circleOffset =
-                Offset(baseSize.width, baseSize.width) / 2 + limitedOffset;
-          });
-        },
-        onPanEnd: (details) {
-          setState(() {
-            circleOffset = Offset(baseSize.width, baseSize.width) / 2;
-          });
-        },
+        onPanUpdate: _onPanUpdate,
+        onPanEnd: _onPanEnd,
         child: Stack(
           children: [
             SizedBox.fromSize(
@@ -74,5 +58,24 @@ class _MyJoystickState extends State<MyJoystick> {
         ),
       ),
     );
+  }
+
+  void _onPanUpdate(DragUpdateDetails details) {
+    final moveOffset =
+        details.localPosition - Offset(baseSize.width, baseSize.width) / 2;
+    final maxRadius = (baseSize.width - circleSize.width) / 2;
+    final limitedOffset = Offset.fromDirection(
+      moveOffset.direction,
+      moveOffset.distance.clamp(0, maxRadius),
+    );
+    setState(() {
+      circleOffset = Offset(baseSize.width, baseSize.width) / 2 + limitedOffset;
+    });
+  }
+
+  void _onPanEnd(DragEndDetails details) {
+    setState(() {
+      circleOffset = Offset(baseSize.width, baseSize.width) / 2;
+    });
   }
 }
