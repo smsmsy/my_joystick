@@ -24,15 +24,13 @@ class _MyJoystickState extends State<MyJoystick> {
   late final Size circleSize;
 
   late Offset circleOffset;
-  late Offset initOffset;
 
   @override
   void initState() {
     super.initState();
     baseSize = Size(widget.size.shortestSide, widget.size.shortestSide);
     circleSize = baseSize.resizeWith(1 / 4);
-    initOffset = Offset(baseSize.width, baseSize.width) / 2;
-    circleOffset = initOffset;
+    circleOffset = Offset(baseSize.width, baseSize.width) / 2;
   }
 
   @override
@@ -40,19 +38,22 @@ class _MyJoystickState extends State<MyJoystick> {
     return SizedBox.fromSize(
       size: baseSize,
       child: GestureDetector(
-        onPanStart: (details) {
-          setState(() {
-            circleOffset = details.localPosition;
-          });
-        },
         onPanUpdate: (details) {
+          final moveOffset = details.localPosition -
+              Offset(baseSize.width, baseSize.width) / 2;
+          final maxRadius = (baseSize.width - circleSize.width) / 2;
+          final limitedOffset = Offset.fromDirection(
+            moveOffset.direction,
+            moveOffset.distance.clamp(0, maxRadius),
+          );
           setState(() {
-            circleOffset = details.localPosition;
+            circleOffset =
+                Offset(baseSize.width, baseSize.width) / 2 + limitedOffset;
           });
         },
         onPanEnd: (details) {
           setState(() {
-            circleOffset = initOffset;
+            circleOffset = Offset(baseSize.width, baseSize.width) / 2;
           });
         },
         child: Stack(
