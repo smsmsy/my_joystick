@@ -4,16 +4,17 @@ import 'package:my_joystick/circle_paint.dart';
 import 'package:my_joystick/extension.dart';
 
 class MyJoystick extends StatefulWidget {
-  const MyJoystick({
-    super.key,
-    this.size = Size.infinite,
-    this.baseWidget,
-    this.circleWidget,
-  });
+  const MyJoystick(
+      {super.key,
+      this.size = Size.infinite,
+      this.baseWidget,
+      this.circleWidget,
+      required this.onMove});
 
   final Size size;
   final Widget? baseWidget;
   final Widget? circleWidget;
+  final Function(Offset) onMove;
 
   @override
   State<MyJoystick> createState() => _MyJoystickState();
@@ -68,6 +69,7 @@ class _MyJoystickState extends State<MyJoystick> {
     setState(() {
       circleOffset = Offset(baseSize.width, baseSize.width) / 2 + limitedOffset;
     });
+    widget.onMove(circleOffset - Offset(baseSize.width, baseSize.width) / 2);
   }
 
   void _onPanEnd(DragEndDetails details) {
@@ -76,3 +78,4 @@ class _MyJoystickState extends State<MyJoystick> {
     });
   }
 }
+

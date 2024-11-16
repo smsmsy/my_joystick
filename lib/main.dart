@@ -27,11 +27,18 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: MyJoystick(
-          size: Size(300, 500),
-        ),
+    return Scaffold(
+      body: Stack(
+        children: [
+          Center(
+            child: MyJoystick(
+              size: const Size(300, 500),
+              onMove: (offset) {
+                print(offset);
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
