@@ -35,27 +35,24 @@ class _MyJoystickState extends State<MyJoystick> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox.fromSize(
-      size: baseSize,
-      child: GestureDetector(
-        onPanUpdate: _onPanUpdate,
-        onPanEnd: _onPanEnd,
-        child: Stack(
-          children: [
-            SizedBox.fromSize(
-              size: baseSize,
-              child: widget.baseWidget ?? const BasePaint(),
+    return GestureDetector(
+      onPanUpdate: _onPanUpdate,
+      onPanEnd: _onPanEnd,
+      child: Stack(
+        children: [
+          SizedBox.fromSize(
+            size: baseSize,
+            child: widget.baseWidget ?? const BasePaint(),
+          ),
+          Positioned(
+            top: circleOffset.dy,
+            left: circleOffset.dx,
+            child: SizedBox.fromSize(
+              size: circleSize,
+              child: widget.circleWidget ?? const CirclePaint(),
             ),
-            Positioned(
-              top: circleOffset.dy,
-              left: circleOffset.dx,
-              child: SizedBox.fromSize(
-                size: circleSize,
-                child: widget.circleWidget ?? const CirclePaint(),
-              ),
-            )
-          ],
-        ),
+          )
+        ],
       ),
     );
   }
