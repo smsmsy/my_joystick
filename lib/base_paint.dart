@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
 
 class BasePaint extends StatelessWidget {
-  const BasePaint({super.key, required this.size});
-
-  final Size size;
+  const BasePaint({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox.fromSize(
-      size: size,
-      child: CustomPaint(
-        painter: BasePainter(),
-      ),
+    return CustomPaint(
+      painter: BasePainter(),
     );
   }
 }

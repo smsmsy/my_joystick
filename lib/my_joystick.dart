@@ -23,44 +23,52 @@ class _MyJoystickState extends State<MyJoystick> {
   late final Size baseSize;
   late final Size circleSize;
 
-  Offset circleOffset = Offset.zero;
-  Offset initOffset = Offset.zero;
+  late Offset circleOffset;
+  late Offset initOffset;
 
   @override
   void initState() {
     super.initState();
     baseSize = Size(widget.size.shortestSide, widget.size.shortestSide);
     circleSize = baseSize.resizeWith(1 / 4);
+    initOffset = Offset(baseSize.width, baseSize.width) / 2;
+    circleOffset = initOffset;
   }
 
   @override
   Widget build(BuildContext context) {
-    // print(circleOffset);
     return SizedBox.fromSize(
       size: baseSize,
       child: GestureDetector(
         onPanStart: (details) {
           setState(() {
-            initOffset = details.localPosition;
+            circleOffset = details.localPosition;
           });
         },
         onPanUpdate: (details) {
-          print(details.localPosition);
           setState(() {
-            circleOffset = circleOffset + details.localPosition;
+            circleOffset = details.localPosition;
           });
         },
         onPanEnd: (details) {
           setState(() {
-            circleOffset = Offset.zero;
+            circleOffset = initOffset;
           });
         },
         child: Stack(
-          alignment: Alignment.center,
           children: [
-            widget.baseWidget ?? BasePaint(size: baseSize),
-            widget.circleWidget ??
-                CirclePaint(size: circleSize, offset: circleOffset),
+            SizedBox.fromSize(
+              size: baseSize,
+              child: widget.baseWidget ?? const BasePaint(),
+            ),
+            Positioned(
+              top: circleOffset.dy,
+              left: circleOffset.dx,
+              child: SizedBox.fromSize(
+                size: circleSize,
+                child: widget.circleWidget ?? const CirclePaint(),
+              ),
+            )
           ],
         ),
       ),
