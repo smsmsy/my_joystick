@@ -4,11 +4,21 @@ import 'package:my_joystick/circle_paint.dart';
 import 'package:my_joystick/extension.dart';
 
 class MyJoystick extends StatefulWidget {
-  const MyJoystick(
-      {super.key, this.size = Size.infinite, required this.onMove});
+  const MyJoystick({
+    super.key,
+    this.size = Size.infinite,
+    required this.onMove,
+    this.baseColor,
+    this.arrowColor,
+    this.circleColor,
+  });
 
   final Size size;
-  final Function(Offset) onMove;
+  final Function(JoystickMove) onMove;
+
+  final Color? baseColor;
+  final Color? arrowColor;
+  final Color? circleColor;
 
   @override
   State<MyJoystick> createState() => _MyJoystickState();
@@ -37,14 +47,19 @@ class _MyJoystickState extends State<MyJoystick> {
         children: [
           SizedBox.fromSize(
             size: baseSize,
-            child: const BasePaint(),
+            child: BasePaint(
+              baseColor: widget.baseColor,
+              arrowColor: widget.arrowColor,
+            ),
           ),
           Positioned(
             top: circleOffset.dy,
             left: circleOffset.dx,
             child: SizedBox.fromSize(
               size: circleSize,
-              child: const CirclePaint(),
+              child: CirclePaint(
+                circleColor: widget.circleColor,
+              ),
             ),
           )
         ],
@@ -63,12 +78,32 @@ class _MyJoystickState extends State<MyJoystick> {
     setState(() {
       circleOffset = Offset(baseSize.width, baseSize.width) / 2 + limitedOffset;
     });
-    widget.onMove(circleOffset - Offset(baseSize.width, baseSize.width) / 2);
+    widget.onMove(
+      JoystickMove(
+        x: limitedOffset.dx / maxRadius,
+        y: limitedOffset.dy / maxRadius,
+      ),
+    );
   }
 
   void _onPanEnd(DragEndDetails details) {
     setState(() {
       circleOffset = Offset(baseSize.width, baseSize.width) / 2;
     });
+  }
+}
+
+class JoystickMove {
+  JoystickMove({
+    required this.x,
+    required this.y,
+  });
+
+  final double x;
+  final double y;
+
+  @override
+  String toString() {
+    return 'JoystickMove(x: $x, y: $y)';
   }
 }

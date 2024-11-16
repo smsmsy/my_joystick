@@ -1,29 +1,35 @@
 import 'package:flutter/material.dart';
 
-class CirclePaint extends StatefulWidget {
+class CirclePaint extends StatelessWidget {
   const CirclePaint({
     super.key,
+    this.circleColor,
   });
 
-  @override
-  State<CirclePaint> createState() => _CirclePaintState();
-}
+  final Color? circleColor;
 
-class _CirclePaintState extends State<CirclePaint> {
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
-      painter: CirclePainter(),
+      painter: CirclePainter(
+        circleColor: circleColor,
+      ),
     );
   }
 }
 
 class CirclePainter extends CustomPainter {
+  CirclePainter({
+    Color? circleColor,
+  }) : circleColor = circleColor ?? const Color.fromARGB(255, 50, 50, 50);
+
+  final Color circleColor;
+
   @override
   void paint(Canvas canvas, Size size) {
     final radius = size.width / 2;
     final paint = Paint()
-      ..color = const Color.fromARGB(255, 0, 0, 0)
+      ..color = circleColor
       ..style = PaintingStyle.fill;
     canvas.drawCircle(Offset.zero, radius, paint);
   }
